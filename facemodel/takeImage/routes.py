@@ -28,7 +28,7 @@ def take_raw_image():
     print('image done', image_id)
 
     if image_id is None:
-        image_id = 'testid1245'
+        image_id = '543testid1245'
 
     try:
         # Store image in User Db
