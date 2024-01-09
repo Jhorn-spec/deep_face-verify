@@ -23,18 +23,18 @@ def take_raw_image():
     if user:
         return jsonify({'message': 'User already exists'}), 400
 
-    # Check with the image if the user has been enrolled before
+    # process the image to get the image id
     image_id = get_image_id(image_file)
     print('image done', image_id)
 
+    # remove this during testing with real image
     if image_id is None:
         image_id = '543testid1245'
 
     try:
         # Store image in User Db
         new_user = User(email=email, first_name=first_name, last_name=last_name, image_id=image_id)
-        db.session.add(new_user)
-        db.session.commit()
+        new_user.insert()
 
         return jsonify({'message': 'User Created and Image processed successfully', 'userData': new_user.format()}), 200
 
