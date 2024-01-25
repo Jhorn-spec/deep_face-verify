@@ -1,3 +1,3 @@
-# deploy-face-model
+# Deep Face Verification Model
 
-face id - one-shotverification using embedding comparison
+face id - one-shot verification using embedding comparison
