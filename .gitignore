@@ -1,3 +1,15 @@
+# Ignore images database folder
+facemodel/ImageProcessor/img_db
+facemodel/ImageProcessor/feed_img
+
+# Ignore hidden files and other special folders
+.*
+__pycache__
+
+# Ignore the environment folder
+face_env/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

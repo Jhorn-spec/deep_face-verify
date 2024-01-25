@@ -66,7 +66,8 @@ def delete_representations():
 def detector(frame, enforce=True):
     try:
         return DeepFace.extract_faces(frame, detector_backend=backends[0], enforce_detection=enforce)
-    except ValueError:
+    except Exception as e:
+        print(f"Image detection failed with error: {e}")
         return None
     
 
