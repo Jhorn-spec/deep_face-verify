@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from facemodel import db
 from datetime import datetime
 from facemodel.models.user import User
-from facemodel.ImageProcessor.image import get_image_id, process_image_id
+from facemodel.ImageProcessor.image import face_detect
 
 
 # Create a Blueprint for identify_image routes
@@ -19,7 +19,7 @@ def identify_image():
     # process the image to get the image id
     # if corressponding user not found, throw error that user not in database
     # Expected return imageid
-    image_id = process_image_id(image_file)
+    image_id = face_detect(image_file)
 
     if image_id == "error":
         return jsonify({'message': 'User not found'}), 404
