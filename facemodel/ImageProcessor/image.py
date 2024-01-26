@@ -1,7 +1,8 @@
-from helpers import backends, detector, models, df_metrics, delete_representations, get_id
+from helpers import backends, detector, models, df_metrics, delete_representations, get_id, live_capture, visulaize_frame
 import cv2
 from cv2 import VideoCapture
 from deepface import DeepFace
+import os
 
 
 
@@ -120,42 +121,31 @@ def register_face(id, image_path=None, live = False):
             return result
 
 
+# detect face using static image
 # take in the path to the image database
-def face_detect(db_path):
-    cap = cv2.VideoCapture(0)
+# image_path comes from live_capture function or
+# local path to image
+def face_detect(image_path, db_path):
     dfs = []
+    try:
+        df = DeepFace.find(img_path=image_path, db_path=db_path, model_name=models[2], 
+                            distance_metric=df_metrics[2], enforce_detection=False)
+                        #    detector_backend=backends[0])
+        dfs.append(df)
+    except Exception as e:
+        print(f"Error in reading image: {e}")
+    
 
-    while True:
-        ret, frame = cap.read()
 
-        if ret == False:
-            break
+    if dfs:
+        try:
+            user_id = get_id(dfs)
+        except Exception as e:
+            print(f"Error in get_id: {e}")
+    else:
+        user_id = None
 
-        face = detector(frame)
-        if face is not None:
-            # face detection and recognition logic
-            x,y,w,h = face[0]['facial_area'].values()  
-            cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255, 0), 3)
-            # cv2.imshow('detect face', frame)
-
-            if cv2.waitKey(1) & 0xFF == ord('c'):
-                df = DeepFace.find(img_path=frame, db_path=db_path, model_name=models[2], 
-                                distance_metric=df_metrics[2], enforce_detection=False)
-                                #    detector_backend=backends[0])
-                dfs.append(df)
-                break
-
-        cv2.imshow('display', frame)
-
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
-
-    user_id = get_id(dfs)
-
-    return user_id
+    return user_id   
 
 
 '''

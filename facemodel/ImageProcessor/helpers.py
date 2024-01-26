@@ -34,6 +34,7 @@ models = [
 
 def live_capture():
     cap = VideoCapture(0)
+    temp_file = ''
     while True:
         ret, frame = cap.read()
         if ret == False:
@@ -87,6 +88,7 @@ def live_capture():
         
     cap.release()
     cv2.destroyAllWindows()
+
     return temp_file
 
 
